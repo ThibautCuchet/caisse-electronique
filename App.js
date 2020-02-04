@@ -1,12 +1,29 @@
-import React from "react";
+import React, { Component } from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Home from "./pages/Home";
+import { Provider } from "react-redux";
+import store from "./store";
 
-const App = createStackNavigation({
-  Home: {
-    screen: Home
+const StackNavigation = createStackNavigator(
+  {
+    Home: {
+      screen: Home
+    }
+  },
+  {
+    initialRouteName: "Home"
   }
-});
+);
 
-export default createAppContainer(App);
+const Routes = createAppContainer(StackNavigation);
+
+export default class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    );
+  }
+}
