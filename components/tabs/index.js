@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { View, ScrollView } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Card } from "react-native-elements";
 import { Text } from "react-native";
 import { COLORS_APP } from "../../styles/colors";
 import {
@@ -14,6 +14,7 @@ class TabHeader extends Component {
   state = {
     index: 0
   };
+
   getTabs() {
     return Object.keys(this.props.products).map((productKey, index) => {
       const borderOpacity = this.state.index == index ? 1 : 0;
@@ -39,13 +40,28 @@ class TabHeader extends Component {
       );
     });
   }
+  getTabView() {
+    return Object.keys(this.props.products).map((productKey, index) => {
+      return (
+        <View>
+          {this.state.index == index &&
+            Object.keys(this.props.products[productKey]).map(productName => {
+              return <Card key={productName} title={productName} />;
+            })}
+        </View>
+      );
+    });
+  }
   render() {
     console.log(this.props.products);
 
     return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: "row" }}>{this.getTabs()}</View>
-      </ScrollView>
+      <View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={{ flexDirection: "row" }}>{this.getTabs()}</View>
+        </ScrollView>
+        {this.getTabView()}
+      </View>
     );
   }
 }
