@@ -5,7 +5,8 @@ import {
 } from "../actions/action-type";
 
 const initState = {
-  total: 0.0
+  total: 0.0,
+  history: []
 };
 
 export default function(state = initState, action) {

@@ -5,7 +5,6 @@ import Header from "../../components/header";
 import { COLORS_APP } from "../../styles/colors";
 import TabHeader from "../../components/tabs";
 import { resetProduct } from "../../actions";
-import { connect } from "react-redux";
 
 class Home extends Component {
   static navigationOptions = {
