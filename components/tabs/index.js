@@ -9,6 +9,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { increaseProduct, decreaseProduct } from "../../actions";
 
 class TabHeader extends Component {
   state = {
@@ -34,6 +36,7 @@ class TabHeader extends Component {
             buttonStyle={{
               height: hp("6%")
             }}
+            titleStyle={{ color: "white" }}
             onPress={() => this.setState({ index })}
           />
         </View>
@@ -41,26 +44,77 @@ class TabHeader extends Component {
     });
   }
   getTabView() {
-    return Object.keys(this.props.products).map((productKey, index) => {
-      return (
-        <View>
-          {this.state.index == index &&
-            Object.keys(this.props.products[productKey]).map(productName => {
-              return <Card key={productName} title={productName} />;
-            })}
-        </View>
-      );
-    });
+    return Object.keys(this.props.products).map((productKey, index) => (
+      <View
+        key={productKey}
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between"
+        }}
+      >
+        {this.state.index == index &&
+          Object.keys(this.props.products[productKey]).map(productName => {
+            const product = this.props.products[productKey][productName];
+            return (
+              <TouchableWithoutFeedback
+                key={productName}
+                onPress={() =>
+                  this.props.increaseProduct({
+                    type: productKey,
+                    name: productName,
+                    price: product.price
+                  })
+                }
+                onLongPress={() =>
+                  this.decreaseProduct(product.count, {
+                    type: productKey,
+                    name: productName,
+                    price: product.price
+                  })
+                }
+              >
+                <Card
+                  title={
+                    <Text style={{ fontSize: 13 }} numberOfLines={2}>
+                      {product.name}
+                    </Text>
+                  }
+                  containerStyle={{
+                    borderRadius: 5,
+                    maxWidth: wp("23%"),
+                    height: hp("13%"),
+                    margin: 5
+                  }}
+                >
+                  <Text>{product.price}€</Text>
+                  <Text>x{product.count}</Text>
+                </Card>
+              </TouchableWithoutFeedback>
+            );
+          })}
+      </View>
+    ));
   }
-  render() {
-    console.log(this.props.products);
 
+  decreaseProduct(count, product) {
+    if (count === 0) return;
+    this.props.decreaseProduct(product);
+  }
+
+  render() {
     return (
       <View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ backgroundColor: COLORS_APP.PRIMARY_COLOR }}
+        >
           <View style={{ flexDirection: "row" }}>{this.getTabs()}</View>
         </ScrollView>
-        {this.getTabView()}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {this.getTabView()}
+        </ScrollView>
       </View>
     );
   }
@@ -68,8 +122,14 @@ class TabHeader extends Component {
 
 const mapStateToProps = ({ products, cart }) => {
   return {
-    products
+    products,
+    cart
   };
 };
 
-export default connect(mapStateToProps)(TabHeader);
+const mapDispatchToProps = {
+  increaseProduct,
+  decreaseProduct
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabHeader);

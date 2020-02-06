@@ -6,35 +6,39 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { render } from "react-dom";
+import { resetProduct } from "../../actions";
+import { withNavigation } from "react-navigation";
 
 export const DefaultHeader = () => {};
 
-export const RightHomeHeader = () => {
-  return (
-    <View style={{ flexDirection: "row" }}>
-      <Button
-        title="Clear"
-        type="clear"
-        containerStyle={{ width: wp("20%") }}
-        titleStyle={{ color: "white" }}
-      />
-      <Button
-        title="Pay"
-        type="clear"
-        containerStyle={{ width: wp("20%") }}
-        titleStyle={{ color: "white" }}
-      />
-    </View>
-  );
-};
+class RightHomeHeader extends Component {
+  render() {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        <Button
+          title="Clear"
+          type="clear"
+          containerStyle={{ width: wp("20%") }}
+          titleStyle={{ color: "white" }}
+          onPress={() => this.props.resetProduct()}
+        />
+        <Button
+          title="Pay"
+          type="clear"
+          containerStyle={{ width: wp("20%") }}
+          titleStyle={{ color: "white" }}
+          onPress={() => this.props.navigation.push("Pay")}
+        />
+      </View>
+    );
+  }
+}
 
 class TotalHeader extends Component {
   render() {
     return (
       <Text style={{ color: "white", fontSize: 18 }}>
-        {" "}
-        {this.props.total}€{" "}
+        {this.props.total.toFixed(2)}€
       </Text>
     );
   }
@@ -46,4 +50,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(TotalHeader);
+const mapDispatchToProps = {
+  resetProduct
+};
+
+export default {
+  TotalHeader: connect(mapStateToProps)(TotalHeader),
+  RightHomeHeader: withNavigation(
+    connect(mapStateToProps, mapDispatchToProps)(RightHomeHeader)
+  )
+};

@@ -4,11 +4,15 @@ import { createStackNavigator } from "react-navigation-stack";
 import Home from "./pages/Home";
 import { Provider } from "react-redux";
 import store from "./store";
+import Pay from "./pages/Pay";
 
 const StackNavigation = createStackNavigator(
   {
     Home: {
       screen: Home
+    },
+    Pay: {
+      screen: Pay
     }
   },
   {

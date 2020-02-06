@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Button } from "react-native-elements";
-import TotalHeader, { RightHomeHeader } from "../../components/header";
+import Header from "../../components/header";
 import { COLORS_APP } from "../../styles/colors";
 import TabHeader from "../../components/tabs";
+import { resetProduct } from "../../actions";
+import { connect } from "react-redux";
 
 class Home extends Component {
   static navigationOptions = {
-    headerRight: () => <RightHomeHeader />,
-    headerTitle: () => <TotalHeader />,
+    headerRight: () => <Header.RightHomeHeader />,
+    headerTitle: () => <Header.TotalHeader />,
     headerStyle: {
       backgroundColor: COLORS_APP.PRIMARY_COLOR
     }
