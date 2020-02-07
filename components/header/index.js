@@ -11,6 +11,25 @@ import { withNavigation } from "react-navigation";
 
 export const DefaultHeader = () => {};
 
+class RightPayHeader extends Component {
+  payed() {
+    this.props.resetProduct();
+    this.props.navigation.goBack();
+  }
+
+  render() {
+    return (
+      <Button
+        title="Paid"
+        type="clear"
+        containerStyle={{ width: wp("20%") }}
+        titleStyle={{ color: "white" }}
+        onPress={() => this.payed()}
+      />
+    );
+  }
+}
+
 class RightHomeHeader extends Component {
   render() {
     return (
@@ -58,5 +77,8 @@ export default {
   TotalHeader: connect(mapStateToProps)(TotalHeader),
   RightHomeHeader: withNavigation(
     connect(mapStateToProps, mapDispatchToProps)(RightHomeHeader)
+  ),
+  RightPayHeader: withNavigation(
+    connect(mapStateToProps, mapDispatchToProps)(RightPayHeader)
   )
 };
