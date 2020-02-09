@@ -20,7 +20,7 @@ class RightPayHeader extends Component {
   render() {
     return (
       <Button
-        title="Paid"
+        title="Paid;"
         type="clear"
         containerStyle={{ width: wp("20%") }}
         titleStyle={{ color: "white" }}

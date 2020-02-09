@@ -3,7 +3,8 @@ import {
   DECREASE_PRODUCT,
   RESET_PRODUCT,
   ADD_PRODUCT,
-  REMOVE_PRODUCT
+  REMOVE_PRODUCT,
+  UPDATE_PRODUCT
 } from "../actions/action-type";
 
 const initState = {

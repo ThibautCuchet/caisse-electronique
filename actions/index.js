@@ -42,6 +42,6 @@ export const removeProduct = product => async dispatch => {
   dispatch({ type: REMOVE_PRODUCT, payload: product });
 };
 
-export const updateProduct = ((products, price) = async dispatch => {
+export const updateProduct = (product, price) => async dispatch => {
   dispatch({ type: UPDATE_PRODUCT, payload: { product, price } });
-});
+};
