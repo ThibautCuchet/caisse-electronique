@@ -4,7 +4,10 @@ import {
   RESET_PRODUCT,
   APPLY_REDUCTION,
   REMOVE_REDUCTION,
-  CONFIRM_PAYMENT
+  CONFIRM_PAYMENT,
+  ADD_PRODUCT,
+  REMOVE_PRODUCT,
+  UPDATE_PRODUCT
 } from "./action-type";
 
 export const increaseProduct = product => async dispatch => {
@@ -30,3 +33,15 @@ export const removeReduction = () => async dispatch => {
 export const confirmPayement = () => async dispatch => {
   dispatch({ type: CONFIRM_PAYMENT });
 };
+
+export const addProduct = product => async dispatch => {
+  dispatch({ type: ADD_PRODUCT, payload: product });
+};
+
+export const removeProduct = product => async dispatch => {
+  dispatch({ type: REMOVE_PRODUCT, payload: product });
+};
+
+export const updateProduct = ((products, price) = async dispatch => {
+  dispatch({ type: UPDATE_PRODUCT, payload: { product, price } });
+});

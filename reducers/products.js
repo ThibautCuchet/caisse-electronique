@@ -1,7 +1,9 @@
 import {
   INCREASE_PRODUCT,
   DECREASE_PRODUCT,
-  RESET_PRODUCT
+  RESET_PRODUCT,
+  ADD_PRODUCT,
+  REMOVE_PRODUCT
 } from "../actions/action-type";
 
 const initState = {
@@ -36,6 +38,23 @@ export default function(state = initState, action) {
         newState[type][product].count = 0;
       });
     });
+    return newState;
+  } else if (action.type === ADD_PRODUCT) {
+    const product = action.payload;
+    const productName = product.name.toLowerCase().replace(" ", "_");
+    const newState = { ...state };
+    newState[productName] = product;
+    return newState;
+  } else if (action.type === REMOVE_PRODUCT) {
+    const product = action.payload;
+    const productName = product.name.toLowerCase().replace(" ", "_");
+    const newState = { ...state };
+    delete newState[productName];
+    return newState;
+  } else if (action.type === UPDATE_PRODUCT) {
+    const { product, price } = action.payload;
+    const productName = product.name.toLowerCase().replace(" ", "_");
+    newState[productName].price = price;
     return newState;
   }
   return state;
