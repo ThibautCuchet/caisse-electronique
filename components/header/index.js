@@ -11,6 +11,12 @@ import { withNavigation } from "react-navigation";
 
 export const DefaultHeader = () => {};
 
+const clear = {
+  type: "clear",
+  containerStyle: { width: wp("20%") },
+  titleStyle: { color: "white" }
+};
+
 class RightPayHeader extends Component {
   payed() {
     this.props.resetProduct();
@@ -18,15 +24,7 @@ class RightPayHeader extends Component {
   }
 
   render() {
-    return (
-      <Button
-        title="Paid;"
-        type="clear"
-        containerStyle={{ width: wp("20%") }}
-        titleStyle={{ color: "white" }}
-        onPress={() => this.payed()}
-      />
-    );
+    return <Button title="Paid" onPress={() => this.payed()} {...clear} />;
   }
 }
 
@@ -36,17 +34,13 @@ class RightHomeHeader extends Component {
       <View style={{ flexDirection: "row" }}>
         <Button
           title="Clear"
-          type="clear"
-          containerStyle={{ width: wp("20%") }}
-          titleStyle={{ color: "white" }}
           onPress={() => this.props.resetProduct()}
+          {...clear}
         />
         <Button
           title="Pay"
-          type="clear"
-          containerStyle={{ width: wp("20%") }}
-          titleStyle={{ color: "white" }}
           onPress={() => this.props.navigation.push("Pay")}
+          {...clear}
         />
       </View>
     );
