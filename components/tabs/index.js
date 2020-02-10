@@ -18,7 +18,8 @@ class TabHeader extends Component {
   };
 
   getTabs() {
-    return Object.keys(this.props.products).map((productKey, index) => {
+    const products = this.props.products;
+    return Object.keys(products).map((productKey, index) => {
       const borderOpacity = this.state.index == index ? 1 : 0;
       return (
         <View
@@ -44,18 +45,19 @@ class TabHeader extends Component {
     });
   }
   getTabView() {
-    return Object.keys(this.props.products).map((productKey, index) => (
+    const products = this.props.products;
+    return Object.keys(products).map((productKey, index) => (
       <View
         key={productKey}
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          justifyContent: "space-between"
+          justifyContent: "flex-start"
         }}
       >
         {this.state.index == index &&
-          Object.keys(this.props.products[productKey]).map(productName => {
-            const product = this.props.products[productKey][productName];
+          Object.keys(products[productKey]).map(productName => {
+            const product = products[productKey][productName];
             return (
               <TouchableWithoutFeedback
                 key={productName}
@@ -76,13 +78,13 @@ class TabHeader extends Component {
               >
                 <Card
                   title={
-                    <Text style={{ fontSize: 13 }} numberOfLines={2}>
+                    <Text style={{ fontSize: wp("3%") }} numberOfLines={2}>
                       {product.name}
                     </Text>
                   }
                   containerStyle={{
                     borderRadius: 5,
-                    maxWidth: wp("23%"),
+                    width: wp("22%"),
                     height: hp("13%"),
                     margin: 5
                   }}
@@ -102,7 +104,7 @@ class TabHeader extends Component {
     this.props.decreaseProduct(product);
   }
 
-  render() {
+  getHomePage() {
     return (
       <View>
         <ScrollView
@@ -118,12 +120,19 @@ class TabHeader extends Component {
       </View>
     );
   }
+
+  render() {
+    return this.props.products ? (
+      this.getHomePage()
+    ) : (
+      <Text>Start by adding products in settings</Text>
+    );
+  }
 }
 
-const mapStateToProps = ({ products, cart }) => {
+const mapStateToProps = ({ products }) => {
   return {
-    products,
-    cart
+    products
   };
 };
 

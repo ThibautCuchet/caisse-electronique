@@ -7,10 +7,38 @@ import {
   CONFIRM_PAYMENT,
   ADD_PRODUCT,
   REMOVE_PRODUCT,
-  UPDATE_PRODUCT
+  UPDATE_PRODUCT,
+  UPDATE_CONNECTION_STATE,
+  UPDATE_PRODUCT_LIST,
+  UPDATE_REDUCTION_LIST,
+  START_CAISSE
 } from "./action-type";
+import { database } from "../storages/database";
 
 //Data function
+
+export const loadProductStorage = products => async dispatch => {
+  dispatch({ type: UPDATE_PRODUCT_LIST, payload: products });
+};
+export const loadReductionStorage = reductions => async dispatch => {
+  dispatch({ type: UPDATE_REDUCTION_LIST, payload: reductions });
+};
+export const updateConnectionState = connected => async dispatch => {
+  if (connected) {
+    const products = await database
+      .ref("products/")
+      .once("value")
+      .then(snapshot => snapshot.val());
+    dispatch({ type: UPDATE_PRODUCT_LIST, payload: products });
+
+    const reductions = await database
+      .ref("reductions/")
+      .once("value")
+      .then(snapshot => snapshot.val());
+    dispatch({ type: UPDATE_REDUCTION_LIST, payload: reductions });
+  }
+  dispatch({ type: UPDATE_CONNECTION_STATE, payload: connected });
+};
 
 //Payement function
 export const applyReduction = reduction => async dispatch => {
@@ -30,6 +58,9 @@ export const removeReduction = () => async dispatch => {
 };
 export const resetProduct = () => async dispatch => {
   dispatch({ type: RESET_PRODUCT });
+};
+export const startCaisse = products => async dispatch => {
+  dispatch({ type: START_CAISSE, payload: products });
 };
 
 //Product function

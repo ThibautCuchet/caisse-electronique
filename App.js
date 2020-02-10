@@ -3,12 +3,19 @@ import { createAppContainer, withNavigation } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import Home from "./pages/Home";
-import { Provider } from "react-redux";
-import store from "./store";
+import { Provider, connect } from "react-redux";
+import store from "./storages/store";
 import Pay from "./pages/Pay";
 import Settings from "./pages/Settings";
 import { COLORS_APP } from "./styles/colors";
 import { Button, Icon } from "react-native-elements";
+import {
+  updateConnectionState,
+  loadProductStorage,
+  loadReductionStorage
+} from "./actions";
+import { database } from "./storages/database";
+import { AsyncStorage } from "react-native";
 
 const CaisseNavigation = createStackNavigator(
   {
@@ -60,12 +67,48 @@ const Drawer = createDrawerNavigator({
 
 const Routes = createAppContainer(Drawer);
 
-export default class App extends Component {
+class App extends Component {
+  componentDidMount() {
+    database
+      .ref(".info/connected")
+      .on("value", value => this.props.updateConnectionState(value));
+  }
+
+  _retrievStorage = async () => {
+    try {
+      const products = await AsyncStorage.getItem("PRODUCTS");
+      const reductions = await AsyncStorage.getItem("REDUCTIONS");
+      if (products) loadProductStorage(JSON.parse(products));
+      if (reductions) loadReductionStorage(JSON.parse(reductions));
+    } catch (err) {
+      console.error(err);
+    }
+  };
   render() {
-    return (
-      <Provider store={store}>
-        <Routes />
-      </Provider>
-    );
+    return <Routes />;
   }
 }
+
+const mapStateToProps = ({ storage }) => {
+  return {
+    storage
+  };
+};
+
+const mapReducerToProps = {
+  updateConnectionState,
+  loadProductStorage,
+  loadReductionStorage
+};
+
+const ConnectedApp = connect(mapStateToProps, mapReducerToProps)(App);
+
+const AppWithStore = () => {
+  return (
+    <Provider store={store}>
+      <ConnectedApp />
+    </Provider>
+  );
+};
+
+export default AppWithStore;

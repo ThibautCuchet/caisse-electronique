@@ -17,6 +17,7 @@ import {
 } from "react-native-responsive-screen";
 import { COLORS_APP } from "../../styles/colors";
 import Header from "../../components/header";
+import { ScrollView } from "react-native-gesture-handler";
 
 class Pay extends Component {
   static navigationOptions = {
@@ -95,15 +96,21 @@ class Pay extends Component {
           </Text>
           <Divider />
           <View style={{ flex: 1 }}>
-            {Object.keys(cart.reduction).map(reduction => (
-              <ListItem
-                key={reduction}
-                title={cart.reduction[reduction].name}
-                bottomDivider
-                chevron
-                onPress={() => this.applyReduction(cart.reduction[reduction])}
-              />
-            ))}
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {cart.reduction &&
+                Object.keys(cart.reduction).map(reduction => (
+                  <ListItem
+                    key={reduction}
+                    title={cart.reduction[reduction].name}
+                    subtitle={` ${cart.reduction[reduction].percent * 100}% `}
+                    bottomDivider
+                    chevron
+                    onPress={() =>
+                      this.applyReduction(cart.reduction[reduction])
+                    }
+                  />
+                ))}
+            </ScrollView>
           </View>
           <Button
             title="Annuler"
@@ -111,66 +118,72 @@ class Pay extends Component {
             onPress={() => this.cancelReduction()}
           />
         </Overlay>
-        {this.getPayProducts()}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: 10
-          }}
-        >
-          <Text>Total</Text>
-          <Text>{cart.total.toFixed(1)}€</Text>
-        </View>
-        <Divider />
-        {cart.activeReduction && (
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                margin: 10
-              }}
-            >
-              <View>
-                <Text>Reduction : {cart.activeReduction.name}</Text>
-                <Text style={{ fontSize: 10 }}>
-                  {cart.activeReduction.percent * 100}%
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {this.getPayProducts()}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: 10
+            }}
+          >
+            <Text>Total</Text>
+            <Text>{cart.total.toFixed(1)}€</Text>
+          </View>
+          <Divider />
+          {cart.activeReduction && (
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: 10
+                }}
+              >
+                <View>
+                  <Text>Reduction : {cart.activeReduction.name}</Text>
+                  <Text style={{ fontSize: 10 }}>
+                    {cart.activeReduction.percent * 100}%
+                  </Text>
+                </View>
+                <Text>
+                  - {(cart.total * cart.activeReduction.percent).toFixed(1)}€
                 </Text>
               </View>
-              <Text>
-                - {(cart.total * cart.activeReduction.percent).toFixed(1)}€
+              <Divider />
+            </View>
+          )}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: 10
+            }}
+          >
+            {cart.reduction && (
+              <Button
+                title="Réductions"
+                onPress={() => this.setState({ reductionVisibility: true })}
+                buttonStyle={{
+                  backgroundColor: COLORS_APP.PRIMARY_COLOR_ACCENT
+                }}
+              />
+            )}
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontSize: 16 }}>A payer : </Text>
+              <Text style={{ fontSize: 16 }}>
+                {(cart.activeReduction
+                  ? (1 - cart.activeReduction.percent) * cart.total
+                  : cart.total
+                ).toFixed(1)}
+                €
               </Text>
             </View>
-            <Divider />
           </View>
-        )}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: 10
-          }}
-        >
-          <Button
-            title="Réductions"
-            onPress={() => this.setState({ reductionVisibility: true })}
-            buttonStyle={{ backgroundColor: COLORS_APP.PRIMARY_COLOR_ACCENT }}
-          />
-          <View style={{ flexDirection: "row" }}>
-            <Text style={{ fontSize: 16 }}>A payer : </Text>
-            <Text style={{ fontSize: 16 }}>
-              {(cart.activeReduction
-                ? (1 - cart.activeReduction.percent) * cart.total
-                : cart.total
-              ).toFixed(1)}
-              €
-            </Text>
-          </View>
-        </View>
+        </ScrollView>
       </View>
     );
   }

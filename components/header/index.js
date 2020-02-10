@@ -8,39 +8,50 @@ import {
 } from "react-native-responsive-screen";
 import { resetProduct } from "../../actions";
 import { withNavigation } from "react-navigation";
+import { clearButtonProperty } from "./style";
 
 export const DefaultHeader = () => {};
 
-const clear = {
-  type: "clear",
-  containerStyle: { width: wp("20%") },
-  titleStyle: { color: "white" }
-};
-
 class RightPayHeader extends Component {
-  payed() {
+  handlePaid() {
     this.props.resetProduct();
     this.props.navigation.goBack();
   }
 
   render() {
-    return <Button title="Paid" onPress={() => this.payed()} {...clear} />;
+    return (
+      <Button
+        title="Paid"
+        onPress={() => this.handlePaid()}
+        icon={{ name: "done", color: "white" }}
+        iconRight
+        {...clearButtonProperty}
+      />
+    );
   }
 }
 
 class RightHomeHeader extends Component {
+  handleReset = () => {
+    this.props.resetProduct();
+  };
+
+  handlePay = () => {
+    this.props.navigation.push("Pay");
+  };
+
   render() {
     return (
       <View style={{ flexDirection: "row" }}>
         <Button
           title="Clear"
-          onPress={() => this.props.resetProduct()}
-          {...clear}
+          onPress={() => this.handleReset()}
+          {...clearButtonProperty}
         />
         <Button
           title="Pay"
-          onPress={() => this.props.navigation.push("Pay")}
-          {...clear}
+          onPress={() => this.handlePay()}
+          {...clearButtonProperty}
         />
       </View>
     );
@@ -57,9 +68,10 @@ class TotalHeader extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ cart, products }) => {
   return {
-    total: state.cart.total
+    total: cart.total,
+    products
   };
 };
 

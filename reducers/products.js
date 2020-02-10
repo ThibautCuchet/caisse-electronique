@@ -4,22 +4,13 @@ import {
   RESET_PRODUCT,
   ADD_PRODUCT,
   REMOVE_PRODUCT,
-  UPDATE_PRODUCT
+  UPDATE_PRODUCT,
+  UPDATE_CONNECTION_STATE,
+  UPDATE_PRODUCT_LIST
 } from "../actions/action-type";
+import { database } from "../storages/database";
 
-const initState = {
-  viande: {
-    viandelle: { price: 2.2, name: "Viandelle", count: 0 },
-    poulicroc: { price: 2.2, name: "Poulicroc", count: 0 },
-    lucifer: { price: 2.2, name: "Lucifer", count: 0 },
-    croquette_fromage: { price: 2.2, name: "Croquette fromage", count: 0 },
-    mexicano: { price: 2.5, name: "Mexicano", count: 0 }
-  },
-  brochettes: {
-    oignons: { price: 3.2, name: "Oignons", count: 0 },
-    pilon: { price: 3.2, name: "Pilon", count: 0 }
-  }
-};
+const initState = {};
 
 export default function(state = initState, action) {
   if (action.type === INCREASE_PRODUCT) {
@@ -57,6 +48,8 @@ export default function(state = initState, action) {
     const productName = product.name.toLowerCase().replace(" ", "_");
     newState[productName].price = price;
     return newState;
+  } else if (action.type === UPDATE_PRODUCT_LIST) {
+    return action.payload;
   }
   return state;
 }

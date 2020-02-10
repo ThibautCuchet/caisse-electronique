@@ -4,24 +4,26 @@ import {
   RESET_PRODUCT,
   APPLY_REDUCTION,
   REMOVE_REDUCTION,
-  CONFIRM_PAYMENT
+  CONFIRM_PAYMENT,
+  UPDATE_REDUCTION_LIST,
+  START_CAISSE
 } from "../actions/action-type";
 
 const initState = {
   total: 0.0,
   history: [],
-  reduction: {
-    police: { name: "Police", percent: 0.8 }
-  },
+  reduction: undefined,
   activeReduction: undefined
 };
 
 export default function(state = initState, action) {
   if (action.type === INCREASE_PRODUCT) {
     const newState = { ...state };
+    const product = action.payload;
     newState.total = newState.total + action.payload.price;
     return newState;
   } else if (action.type === DECREASE_PRODUCT) {
+    const product = action.payload;
     const newState = { ...state };
     newState.total = newState.total - action.payload.price;
     return newState;
@@ -45,6 +47,14 @@ export default function(state = initState, action) {
       ? total * (1 - activeReduction.percent)
       : total;
     newState.history.push({ date, total });
+  } else if (action.type === UPDATE_REDUCTION_LIST) {
+    const newState = { ...state };
+    newState.reduction = action.payload;
+    return newState;
+  } else if (action.type === START_CAISSE) {
+    const newState = { ...state };
+    newState.products = action.payload;
+    return newState;
   }
   return state;
 }

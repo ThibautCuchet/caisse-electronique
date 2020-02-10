@@ -1,15 +1,20 @@
 import {
-  ADD_CHECK_CONNECTION,
+  ADD_PRODUCT,
   REMOVE_PRODUCT,
-  UPDATE_PRODUCT
+  UPDATE_PRODUCT,
+  UPDATE_CONNECTION_STATE
 } from "../actions/action-type";
+import { database } from "../storages/database";
 
 const initState = {
   connected: false
 };
 
 export default function(state = initState, action) {
-  if (action.type === ADD_CHECK_CONNECTION) {
+  if (action.type === UPDATE_CONNECTION_STATE) {
+    const newState = { ...state };
+    newState.connected = action.payload;
+    return newState;
   } else if (action.type === ADD_PRODUCT) {
     if (state.connected) {
     } else {
@@ -23,4 +28,5 @@ export default function(state = initState, action) {
     } else {
     }
   }
+  return state;
 }
