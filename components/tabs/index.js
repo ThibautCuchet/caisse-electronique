@@ -10,11 +10,16 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { increaseProduct, decreaseProduct } from "../../actions";
+import { increaseProduct, decreaseProduct, startCaisse } from "../../actions";
 
 class TabHeader extends Component {
   state = {
     index: 0
+  };
+
+  handleIncremetProduct = product => {
+    this.props.increaseProduct(product);
+    this.props.startCaisse();
   };
 
   getTabs() {
@@ -62,7 +67,7 @@ class TabHeader extends Component {
               <TouchableWithoutFeedback
                 key={productName}
                 onPress={() =>
-                  this.props.increaseProduct({
+                  this.handleIncremetProduct({
                     type: productKey,
                     name: productName,
                     price: product.price
@@ -138,7 +143,8 @@ const mapStateToProps = ({ products }) => {
 
 const mapDispatchToProps = {
   increaseProduct,
-  decreaseProduct
+  decreaseProduct,
+  startCaisse
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabHeader);

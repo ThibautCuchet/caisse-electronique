@@ -16,6 +16,7 @@ import {
 } from "./actions";
 import { database } from "./storages/database";
 import { AsyncStorage } from "react-native";
+import CaisseSettings from "./pages/Settings/caisse";
 
 const CaisseNavigation = createStackNavigator(
   {
@@ -31,30 +32,37 @@ const CaisseNavigation = createStackNavigator(
   }
 );
 
-const SettingsNavigation = createStackNavigator({
-  Home: {
-    screen: Settings,
-    navigationOptions: ({ navigation }) => ({
-      headerStyle: {
-        backgroundColor: COLORS_APP.PRIMARY_COLOR
-      },
-      headerTintColor: "white",
-      headerLeft: () => (
-        <Button
-          type="clear"
-          icon={
-            <Icon
-              name="menu"
-              type="material-community"
-              onPress={() => navigation.toggleDrawer()}
-            />
-          }
-        />
-      )
-    })
+const SettingsNavigation = createStackNavigator(
+  {
+    Home: {
+      screen: Settings,
+      navigationOptions: ({ navigation }) => ({
+        headerStyle: {
+          backgroundColor: COLORS_APP.PRIMARY_COLOR
+        },
+        headerTintColor: "white",
+        headerLeft: () => (
+          <Button
+            type="clear"
+            icon={
+              <Icon
+                name="menu"
+                type="material-community"
+                onPress={() => navigation.toggleDrawer()}
+              />
+            }
+          />
+        )
+      })
+    },
+    CaisseSettings: {
+      screen: CaisseSettings
+    }
   },
-  initialRouteName: "Home"
-});
+  {
+    initialRouteName: "Home"
+  }
+);
 
 const Drawer = createDrawerNavigator({
   Caisse: {
@@ -71,7 +79,12 @@ class App extends Component {
   componentDidMount() {
     database
       .ref(".info/connected")
-      .on("value", value => this.props.updateConnectionState(value));
+      .on("value", value =>
+        this.props.updateConnectionState(
+          value,
+          this.props.storage.currentPaying
+        )
+      );
   }
 
   _retrievStorage = async () => {

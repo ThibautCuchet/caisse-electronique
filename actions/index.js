@@ -23,8 +23,11 @@ export const loadProductStorage = products => async dispatch => {
 export const loadReductionStorage = reductions => async dispatch => {
   dispatch({ type: UPDATE_REDUCTION_LIST, payload: reductions });
 };
-export const updateConnectionState = connected => async dispatch => {
-  if (connected) {
+export const updateConnectionState = (
+  connected,
+  currentPaying
+) => async dispatch => {
+  if (connected && !currentPaying) {
     const products = await database
       .ref("products/")
       .once("value")
@@ -60,7 +63,7 @@ export const resetProduct = () => async dispatch => {
   dispatch({ type: RESET_PRODUCT });
 };
 export const startCaisse = products => async dispatch => {
-  dispatch({ type: START_CAISSE, payload: products });
+  dispatch({ type: START_CAISSE });
 };
 
 //Product function

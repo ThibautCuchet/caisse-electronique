@@ -13,7 +13,8 @@ const initState = {
   total: 0.0,
   history: [],
   reduction: undefined,
-  activeReduction: undefined
+  activeReduction: undefined,
+  currentPaying: false
 };
 
 export default function(state = initState, action) {
@@ -31,6 +32,7 @@ export default function(state = initState, action) {
     const newState = { ...state };
     newState.total = 0;
     newState.activeReduction = undefined;
+    newState.currentPaying = false;
     return newState;
   } else if (action.type === APPLY_REDUCTION) {
     const newState = { ...state };
@@ -53,7 +55,7 @@ export default function(state = initState, action) {
     return newState;
   } else if (action.type === START_CAISSE) {
     const newState = { ...state };
-    newState.products = action.payload;
+    newState.currentPaying = true;
     return newState;
   }
   return state;
