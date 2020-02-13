@@ -24,7 +24,10 @@ const CaisseNavigation = createStackNavigator(
       screen: Home
     },
     Pay: {
-      screen: Pay
+      screen: Pay,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
     }
   },
   {
@@ -56,7 +59,14 @@ const SettingsNavigation = createStackNavigator(
       })
     },
     CaisseSettings: {
-      screen: CaisseSettings
+      screen: CaisseSettings,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: COLORS_APP.PRIMARY_COLOR
+        },
+        headerTintColor: "white",
+        title: "Caisse"
+      }
     }
   },
   {
@@ -64,14 +74,30 @@ const SettingsNavigation = createStackNavigator(
   }
 );
 
-const Drawer = createDrawerNavigator({
-  Caisse: {
-    screen: CaisseNavigation
+const Drawer = createDrawerNavigator(
+  {
+    Caisse: {
+      screen: CaisseNavigation,
+      navigationOptions: {
+        drawerIcon: <Icon name="store" color="white" />
+      }
+    },
+    Settings: {
+      screen: SettingsNavigation,
+      navigationOptions: {
+        drawerIcon: <Icon name="settings" color="white" />
+      }
+    }
   },
-  Settings: {
-    screen: SettingsNavigation
+  {
+    drawerBackgroundColor: COLORS_APP.PRIMARY_COLOR,
+    contentOptions: {
+      labelStyle: {
+        color: "white"
+      }
+    }
   }
-});
+);
 
 const Routes = createAppContainer(Drawer);
 

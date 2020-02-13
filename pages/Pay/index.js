@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
-import { Text } from "react-native";
+import { Text, ScrollView } from "react-native";
 import {
   List,
   ListItem,
@@ -17,7 +17,6 @@ import {
 } from "react-native-responsive-screen";
 import { COLORS_APP } from "../../styles/colors";
 import Header from "../../components/header";
-import { ScrollView } from "react-native-gesture-handler";
 
 class Pay extends Component {
   static navigationOptions = {
@@ -172,7 +171,7 @@ class Pay extends Component {
                 }}
               />
             )}
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", marginBottom: 25 }}>
               <Text style={{ fontSize: 16 }}>A payer : </Text>
               <Text style={{ fontSize: 16 }}>
                 {(cart.activeReduction
