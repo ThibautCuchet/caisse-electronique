@@ -59,14 +59,7 @@ const SettingsNavigation = createStackNavigator(
       })
     },
     CaisseSettings: {
-      screen: CaisseSettings,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: COLORS_APP.PRIMARY_COLOR
-        },
-        headerTintColor: "white",
-        title: "Caisse"
-      }
+      screen: CaisseSettings
     }
   },
   {
