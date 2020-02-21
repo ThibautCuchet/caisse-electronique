@@ -16,7 +16,7 @@ import {
 } from "./actions";
 import { database } from "./storages/database";
 import { AsyncStorage } from "react-native";
-import CaisseSettings from "./pages/Settings/caisse";
+import CaisseSetttingsNavigator from "./pages/Settings/Caisse";
 
 const CaisseNavigation = createStackNavigator(
   {
@@ -59,7 +59,7 @@ const SettingsNavigation = createStackNavigator(
       })
     },
     CaisseSettings: {
-      screen: CaisseSettings
+      screen: CaisseSetttingsNavigator
     }
   },
   {
